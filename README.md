@@ -1,11 +1,16 @@
 # Dead by Daylight Tournament Manager
 
 <p align="center">
-  <img src="Assets/Header/DBD%20Logo.png" alt="Dead by Daylight Tournament Manager Logo" width="360" />
+  <img src="Assets/Header/Tournament_Logo.png" alt="Dead by Daylight Tournament Manager Logo" width="340" />
 </p>
 
 <p align="center">
-  <strong>Language Selection:</strong><br>
+  <strong>Live Web Application:</strong><br>
+  <a href="https://pattechx.github.io/DBD-Tournament-Manager/">https://pattechx.github.io/DBD-Tournament-Manager/</a>
+</p>
+
+<p align="center">
+  <strong>Language Selection / Sprachauswahl:</strong><br>
   <a href="#deutsch">Deutsch</a> &bull;
   <a href="#english">English</a> &bull;
   <a href="#espanol">Español</a> &bull;
@@ -21,6 +26,10 @@
 Der **Dead by Daylight Tournament Manager** ist eine spezialisierte Desktop- und Web-Anwendung zur Organisation, Durchführung und statistischen Auswertung strukturierter Turniere im kompetitiven und privaten Rahmen. Das System bildet sowohl Killer- als auch Survivor-Wettbewerbe über mehrstufige Gruppen- und K.O.-Phasen ab und integriert ein automatisiertes Regelwerk für Loadouts, Zuweisungen und Tie-Breaker.
 
 Die Software wird als native **Windows Desktop-Anwendung (NSIS Installer / Portable Executable)** sowie als plattformunabhängige **Web-Anwendung über GitHub Pages** bereitgestellt.
+
+### Web-Version (Direkt im Browser)
+Die Anwendung kann ohne Installation direkt im Webbrowser ausgeführt werden:
+* **Online-Version:** [https://pattechx.github.io/DBD-Tournament-Manager/](https://pattechx.github.io/DBD-Tournament-Manager/)
 
 ### Spieler-Profile und Besitzverwaltung (Core Feature)
 Ein zentraler Kern des Systems ist das integrierte Spieler- und Kontomanagement, das die realen Gegebenheiten der Konten aller Turnierteilnehmer abbildet:
@@ -62,10 +71,10 @@ Ein zentraler Kern des Systems ist das integrierte Spieler- und Kontomanagement,
 * **Datenpersistenz:**
   * Vollständiger Export und Import von Turnierständen und Spielerprofilen im JSON-Format.
 
-### Installation und Ausführung (Windows)
-Vorkompilierte Binärdateien befinden sich im Verzeichnis `dist/`:
-* **Installationspaket:** `dist/DBD Tournament Setup 1.0.0.exe` (erstellt Desktop- und Startmenü-Verknüpfungen inklusive Deinstallationsroutine).
-* **Portable Version:** `dist/DBD Tournament 1.0.0.exe` (direkt ausführbar ohne Installationsprozess).
+### Windows Desktop-App & Downloads
+Fertig kompilierte Installations- und Programmdateien stehen unter [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases) zum Download bereit:
+* **Installationspaket:** `DBD Tournament Setup 1.0.0.exe` (erstellt Desktop- und Startmenü-Verknüpfungen inklusive Deinstallationsroutine).
+* **Portable Version:** `DBD Tournament 1.0.0.exe` (direkt ausführbar ohne Installationsprozess).
 
 ### Entwicklungs- und Build-Befehle
 Voraussetzung: Node.js (LTS Version 18 oder höher).
@@ -76,6 +85,10 @@ npm start       # Start der Anwendung im Entwicklungsmodus
 npm run dist    # Kompilierung des Installers und der portablen .exe
 ```
 
+### Rechtliche Hinweise und Copyright
+* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* und alle zugehörigen Charaktere, Grafiken, Markenzeichen und Namen sind Eigentum von Behaviour Interactive Inc.
+* **Designed by Dr. D. Erobert and Built with AI**
+
 ---
 
 <a name="english"></a>
@@ -85,6 +98,10 @@ npm run dist    # Kompilierung des Installers und der portablen .exe
 The **Dead by Daylight Tournament Manager** is a dedicated desktop and web application designed for structuring, administering, and analyzing organized competitive and casual tournaments. The software supports both Killer and Survivor formats across multi-stage group rounds and knockout brackets, offering automated management of loadouts, player rotation, and tie-breaking procedures.
 
 The application is distributed as a native **Windows Desktop Application (NSIS Installer / Portable Executable)** and as a zero-install **Web Application deployed via GitHub Pages**.
+
+### Web Application (Direct Browser Access)
+The software can be executed instantly in any modern web browser:
+* **Live Application:** [https://pattechx.github.io/DBD-Tournament-Manager/](https://pattechx.github.io/DBD-Tournament-Manager/)
 
 ### Player Profiles and Ownership Management (Core Feature)
 A foundational architectural component of the manager is its granular player profile and inventory system, reflecting the real in-game account status of each competitor:
@@ -125,10 +142,10 @@ A foundational architectural component of the manager is its granular player pro
 * **State Management:**
   * Full snapshot serialization covering tournaments and player profiles via JSON export and import.
 
-### Windows Distribution
-Pre-compiled executable packages are located in `dist/`:
-* **Installer:** `dist/DBD Tournament Setup 1.0.0.exe` (NSIS setup program with desktop shortcuts and uninstaller).
-* **Portable:** `dist/DBD Tournament 1.0.0.exe` (self-contained executable requiring no installation).
+### Windows Distribution & Releases
+Pre-compiled executable packages are available for download under [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases):
+* **Installer:** `DBD Tournament Setup 1.0.0.exe` (NSIS setup program with desktop shortcuts and uninstaller).
+* **Portable:** `DBD Tournament 1.0.0.exe` (self-contained executable requiring no installation).
 
 ### Build Instructions
 Prerequisite: Node.js (LTS version 18 or newer).
@@ -139,6 +156,10 @@ npm start       # Run locally in development environment
 npm run dist    # Package installer and portable executables
 ```
 
+### Legal Notice and Copyright
+* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* and all associated characters, logos, trademarks, and names are properties of Behaviour Interactive Inc.
+* **Designed by Dr. D. Erobert and Built with AI**
+
 ---
 
 <a name="espanol"></a>
@@ -148,6 +169,10 @@ npm run dist    # Package installer and portable executables
 El **Dead by Daylight Tournament Manager** es una aplicación técnica diseñada para la organización, gestión y análisis estadístico de torneos competitivos de Dead by Daylight. El sistema administra competiciones tanto de Asesinos como de Supervivientes a través de fases de grupos y cuadros de eliminación directa, incorporando mecanismos automáticos de equipamiento, asignación de jugadores y desempates.
 
 El software se distribuye como **aplicación de escritorio para Windows (.exe / instalador NSIS)** y como **aplicación web mediante GitHub Pages**.
+
+### Aplicación Web (Acceso Directo)
+Disponible directamente en el navegador sin instalación previa:
+* **Versión Web:** [https://pattechx.github.io/DBD-Tournament-Manager/](https://pattechx.github.io/DBD-Tournament-Manager/)
 
 ### Perfiles de Jugador y Gestión de Propiedad (Función Principal)
 Una característica central del sistema es el control detallado de inventario y progreso para cada jugador humano participante:
@@ -180,6 +205,11 @@ Una característica central del sistema es el control detallado de inventario y 
   * Balance de rendimiento humano y clasificación global de personajes.
   * Exportación e importación completa en formato JSON.
 
+### Distribución para Windows y Descargas
+Los archivos ejecutables están disponibles en la sección [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases):
+* **Instalador:** `DBD Tournament Setup 1.0.0.exe` (instalador con accesos directos y desinstalador).
+* **Portable:** `DBD Tournament 1.0.0.exe` (ejecutable directo sin instalación).
+
 ### Compilación y Ejecución
 Requisito: Node.js (LTS v18 o superior).
 
@@ -188,6 +218,10 @@ npm install     # Instalación de dependencias
 npm start       # Ejecución en entorno de desarrollo
 npm run dist    # Generación de paquetes instalables y portables para Windows
 ```
+
+### Aviso Legal y Derechos de Autor
+* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* y todos los personajes, logotipos, marcas comerciales y nombres asociados son propiedad de Behaviour Interactive Inc.
+* **Designed by Dr. D. Erobert and Built with AI**
 
 ---
 
@@ -198,6 +232,10 @@ npm run dist    # Generación de paquetes instalables y portables para Windows
 Le **Dead by Daylight Tournament Manager** est une application dédiée à l'administration, à l'arbitrage et au suivi statistique de compétitions structurées sur Dead by Daylight. La solution prend en charge les épreuves de Tueurs et de Survivants via des phases de poules et des arbres à élimination directe, intégrant la gestion automatisée des configurations d'atouts, la rotation des participants et la résolution des égalités.
 
 L'outil est disponible sous forme d'**application de bureau Windows (installeur NSIS / exécutable portable)** et en accès direct en ligne via **GitHub Pages**.
+
+### Application Web (Accès Navigateur Direct)
+Accessible sans téléchargement ni configuration locale :
+* **Version en ligne :** [https://pattechx.github.io/DBD-Tournament-Manager/](https://pattechx.github.io/DBD-Tournament-Manager/)
 
 ### Profils de Joueurs et Gestion des Possessions (Fonction Clé)
 Le système intègre une modélisation précise des comptes des participants réels :
@@ -230,6 +268,11 @@ Le système intègre une modélisation précise des comptes des participants ré
   * Bilan individuel des joueurs humains et hiérarchisation globale des personnages.
   * Sauvegarde et restauration complètes par fichiers JSON.
 
+### Distribution Windows et Téléchargements
+Les fichiers exécutables sont téléchargeables sous [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases) :
+* **Installeur :** `DBD Tournament Setup 1.0.0.exe` (programme d'installation NSIS avec raccourcis et désinstalleur).
+* **Portable :** `DBD Tournament 1.0.0.exe` (exécutable autonome sans installation).
+
 ### Commandes de Compilation
 Prérequis : Node.js (version LTS 18 ou supérieure).
 
@@ -239,10 +282,6 @@ npm start       # Lancement en mode développement
 npm run dist    # Assemblage de l'installeur et de l'exécutable portable Windows
 ```
 
----
-
-## Mentions Légales et Droits
-
-* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* et l'ensemble des éléments graphiques, noms de personnages et marques associés sont la propriété de Behaviour Interactive Inc.
+### Mentions Légales et Droits d'Auteur
+* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* et l'ensemble des éléments graphiques, marques, logos et noms associés sont la propriété exclusive de Behaviour Interactive Inc.
 * **Designed by Dr. D. Erobert and Built with AI**
-
