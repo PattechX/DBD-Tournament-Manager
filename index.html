@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dead by Daylight — Killer & Survivor World Cup Manager</title>
+  <link rel="stylesheet" href="fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="fog-bg"></div>
+  <div class="vignette"></div>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <!-- Floating DBD Logo & Dynamic Mode Banner -->
+    <div class="header-hero-banner">
+      <div class="lang-selector" id="langSelector" aria-label="Language Selector">
+        <button type="button" class="lang-btn" data-lang="de" title="Deutsch">🇩🇪 DE</button>
+        <button type="button" class="lang-btn" data-lang="en" title="English">🇬🇧 EN</button>
+        <button type="button" class="lang-btn" data-lang="es" title="Español">🇪🇸 ES</button>
+        <button type="button" class="lang-btn" data-lang="fr" title="Français">🇫🇷 FR</button>
+      </div>
+
+      <div class="header-copyright">
+        © Copyright by Behaviour Interactive Inc. &bull; Designed by Dr. D. Erobert and Built with AI
+      </div>
+
+      <div class="dbd-floating-logo-wrap">
+        <video src="Assets/Header/Logo Animated.mp4" class="dbd-main-logo" autoplay loop muted playsinline aria-label="Dead by Daylight Animated Logo"></video>
+      </div>
+
+      <div class="mode-emblem-row">
+        <div class="mode-logo-badge">
+          <img id="headerModeLogo" src="Assets/Header/Killer Logo.webp" class="header-mode-logo" alt="Mode Logo" />
+        </div>
+        <div class="brand-text-center">
+          <h1 class="brand-title" id="brandMainTitle">THE ENTITY'S KILLER WORLD CUP</h1>
+          <p class="brand-subtitle" id="brandSubTitle">Dead by Daylight Killer & Survivor Tournament Manager</p>
+        </div>
+      </div>
+
+      <!-- ROLE SWITCHER: KILLER vs SURVIVOR TOURNAMENT -->
+      <div class="role-mode-switch" id="roleModeSwitch" data-i18n-title="roleSwitchTooltip" title="Zwischen Killer-WM und Survivor-WM umschalten (beide Turniere werden separat gespeichert!)">
+        <button type="button" class="role-switch-btn active" data-role="killer" id="btnRoleKiller">
+          <img src="Assets/Header/Killer Logo.webp" class="role-switch-icon" alt="" />
+          <span data-i18n="roleKiller">Killer-WM</span>
+        </button>
+        <button type="button" class="role-switch-btn" data-role="survivor" id="btnRoleSurvivor">
+          <img src="Assets/Header/Survivor Logo.webp" class="role-switch-icon" alt="" />
+          <span data-i18n="roleSurvivor">Survivor-WM</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation & Actions Bar -->
+    <div class="header-toolbar">
+      <nav class="phase-nav" id="phaseNav">
+        <button class="nav-tab active" data-view="setup">
+          <span class="step-num">1</span>
+          <span id="navSetupLabel">Killer & Setup</span>
+        </button>
+        <button class="nav-tab" data-view="players" id="tabPlayers">
+          <span class="step-num">👥</span>
+          <span><span data-i18n="tabPlayers">Spieler-Profile</span> (<span id="navPlayerCount">2</span>)</span>
+        </button>
+        <button class="nav-tab" data-view="groups" id="tabGroups" disabled>
+          <span class="step-num">2</span>
+          <span data-i18n="tabGroups">Gruppenphase</span>
+        </button>
+        <button class="nav-tab" data-view="bracket" id="tabBracket" disabled>
+          <span class="step-num">3</span>
+          <span data-i18n="tabBracket">K.O.-Baum</span>
+        </button>
+        <button class="nav-tab" data-view="stats" id="tabStats" disabled>
+          <span class="step-num">4</span>
+          <span data-i18n="tabStats">Statistiken</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-ghost btn-sm" id="btnExport" data-i18n-title="saveTitle" data-i18n="btnSave" title="Turnierstand & Spielerprofile als JSON-Datei speichern">
+          💾 Speichern
+        </button>
+        <label class="btn btn-ghost btn-sm" data-i18n-title="loadTitle" title="Turnierstand aus JSON-Datei laden">
+          <span data-i18n="btnLoad">📂 Laden</span>
+          <input type="file" id="inputImport" accept=".json" hidden />
+        </label>
+        <button class="btn btn-danger-outline btn-sm" id="btnResetTournament" data-i18n-title="resetTitle" data-i18n="btnReset" title="Aktuelles Turnier komplett zurücksetzen">
+          🔄 Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- ==================== VIEW 1: SETUP & ROSTER ==================== -->
+    <section id="view-setup" class="view-section active">
+      <div class="setup-grid">
+        <!-- Left/Top: Tournament Settings Card -->
+        <aside class="config-panel card">
+          <div class="card-header">
+            <h2 id="setupCardTitle">⚙️ Killer-Turnier-Modus (WM)</h2>
+            <p class="text-muted" id="setupCardSub">Konfiguriere Gruppen, Wertung, Spieler-Zuweisung und Teilnehmer.</p>
+          </div>
+
+          <div class="config-group">
+            <label class="config-label" data-i18n="quickSelectLabel">Teilnehmer-Auswahl Schnellwahl</label>
+            <div class="quick-presets">
+              <button class="btn btn-secondary btn-xs" data-preset="all"><span data-i18n="btnAll">Alle</span> (<span id="totalKillerCountBadge">44</span>)</button>
+              <button class="btn btn-secondary btn-xs" data-preset="playable" data-i18n="btnPlayableOnly" title="Wählt nur Charaktere aus, die von mindestens einem aktiven Spieler besessen werden">🎮 Nur Spielbare (Besitz)</button>
+              <button class="btn btn-secondary btn-xs" data-preset="no_legacy" data-i18n="btnWithoutLegacy" title="Alle außer Legacy-Charaktere">Ohne Legacy</button>
+              <button class="btn btn-secondary btn-xs" data-preset="32" data-i18n="btnCup32">32er WM (Klassisch)</button>
+              <button class="btn btn-secondary btn-xs" data-preset="24" data-i18n="btnCup24">24er EM/WM</button>
+              <button class="btn btn-secondary btn-xs" data-preset="16" data-i18n="btnCup16">16er Turnier</button>
+              <button class="btn btn-secondary btn-xs" data-preset="original" data-i18n="catBase">Nur Original</button>
+              <button class="btn btn-secondary btn-xs" data-preset="licensed" data-i18n="catLicensed">Nur Lizenziert</button>
+              <button class="btn btn-secondary btn-xs" data-preset="legacy">Nur Legacy</button>
+              <button class="btn btn-secondary btn-xs" data-preset="none" data-i18n="btnOwnNone">Keine</button>
+            </div>
+          </div>
+
+          <div class="config-row">
+            <div class="config-group">
+              <label for="selectGroupSize" class="config-label" data-i18n="groupSize">Gruppengröße</label>
+              <select id="selectGroupSize" class="input-select">
+                <option value="4" selected>4 pro Gruppe (WM-Standard)</option>
+                <option value="3">3 pro Gruppe</option>
+                <option value="5">5 pro Gruppe</option>
+                <option value="6">6 pro Gruppe</option>
+              </select>
+            </div>
+
+            <div class="config-group">
+              <label for="selectAdvanceCount" class="config-label" data-i18n="advanceCount">Weiterkommen ins K.O.-System</label>
+              <select id="selectAdvanceCount" class="input-select">
+                <option value="top2" selected>Top 2 jeder Gruppe (+ ggf. beste Dritte)</option>
+                <option value="top1">Nur Gruppensieger (Platz 1)</option>
+                <option value="bracket16">Fester 16er K.O.-Baum (Top-Gruppenplätze)</option>
+                <option value="bracket8">Fester 8er K.O.-Baum (Viertelfinale)</option>
+                <option value="bracket4">Fester 4er K.O.-Baum (Halbfinale)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-row">
+            <div class="config-group">
+              <label for="selectScoringMode" class="config-label" data-i18n="scoringMode">Wertungssystem pro Match</label>
+              <select id="selectScoringMode" class="input-select">
+                <!-- Dynamically populated by JS depending on Killer or Survivor mode -->
+              </select>
+              <span class="scoring-mode-desc" id="scoringModeDesc"></span>
+            </div>
+
+            <div class="config-group">
+              <label for="selectThirdPlace" class="config-label" data-i18n="thirdPlaceMatch">Spiel um Platz 3</label>
+              <select id="selectThirdPlace" class="input-select">
+                <option value="yes" selected>Ja (Kleines Finale im K.O.-Baum)</option>
+                <option value="no">Nein</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-group">
+            <label for="selectPerkMode" class="config-label" data-i18n="perkMode">🔮 Perk-Modus (Regelwerk)</label>
+            <select id="selectPerkMode" class="input-select">
+              <option value="random">🎲 Random Perks (4 zufällige Perks werden vorgegeben)</option>
+              <option value="adept">🏅 Adept-Modus (Nur die 3 eigenen Charakter-Perks)</option>
+              <option value="custom">🛠️ Eigene Perk-Wahl (Selbst bestimmen & im Match hinterlegen)</option>
+              <option value="perkless">🚫 Perkless-Modus (Komplett ohne Perks spielen)</option>
+            </select>
+            <span class="scoring-mode-desc" id="perkModeDesc"></span>
+          </div>
+
+          <div class="config-row">
+            <div class="config-group">
+              <label for="selectItemAddonMode" class="config-label" data-i18n="itemAddonMode">🎒 Item & Addon Modus</label>
+              <select id="selectItemAddonMode" class="input-select">
+                <option value="random" selected>🎲 Random Items & Addons</option>
+                <option value="custom">🛠️ Eigene Wahl (Frei wählen & eintragen)</option>
+                <option value="none">🚫 Ohne Items & Addons (Komplett ohne)</option>
+              </select>
+              <span class="scoring-mode-desc" id="itemAddonModeDesc"></span>
+            </div>
+
+            <div class="config-group">
+              <label for="selectItemPoolMode" class="config-label" data-i18n="itemPoolMode">📦 Item & Event-Pool</label>
+              <select id="selectItemPoolMode" class="input-select">
+                <option value="basis" selected>📦 Nur Basis-Items (Standard-Blutnetz)</option>
+                <option value="events">🎉 Inkl. Event-Items (Jubiläum, Halloween etc.)</option>
+              </select>
+              <span class="scoring-mode-desc" id="itemPoolModeDesc"></span>
+            </div>
+          </div>
+
+          <!-- Player Summary Mini-Box -->
+          <div class="player-summary-box" id="setupPlayerSummary">
+            <div class="player-summary-header">
+              <span>👥 <strong data-i18n="playerSummaryTitle">Spieler-Zuweisung (1–6 Spieler)</strong></span>
+              <button type="button" class="btn btn-secondary btn-xs" id="btnGotoPlayers" data-i18n="btnProfilesOwnership">Profile & Besitz →</button>
+            </div>
+            <p class="player-summary-text" id="setupPlayerSummaryText">
+              2 aktive Spieler registriert. Der Algorithmus teilt die Matches fair unter Berücksichtigung des Charakter-Besitzes auf.
+            </p>
+          </div>
+
+          <!-- Dynamic Tournament Preview Box -->
+          <div class="tournament-preview" id="tournamentPreview">
+            <div class="preview-stat">
+              <span class="preview-val" id="previewSelectedCount">32</span>
+              <span class="preview-lbl" id="previewSelectedLabel">Ausgewählte Killer</span>
+            </div>
+            <div class="preview-stat">
+              <span class="preview-val" id="previewGroupCount">8</span>
+              <span class="preview-lbl" data-i18n="previewGroups">Gruppen</span>
+            </div>
+            <div class="preview-stat">
+              <span class="preview-val" id="previewKoCount">16</span>
+              <span class="preview-lbl" data-i18n="previewKo">K.O.-Finalisten</span>
+            </div>
+          </div>
+          <p class="preview-hint" id="previewHintText">
+            Perfekt! 8 Gruppen à 4 → Top 2 jeder Gruppe ziehen ins Achtelfinale (16er K.O.-Baum) ein.
+          </p>
+
+          <!-- Custom Character Add -->
+          <div class="custom-killer-box">
+            <label class="config-label" id="customCharLabel" data-i18n="btnAddCustom">Eigenen / Neuen Charakter hinzufügen</label>
+            <div class="custom-killer-inputs">
+              <input type="text" id="customKillerTitle" class="input-text" placeholder="Name / Titel" />
+              <input type="text" id="customKillerName" class="input-text" placeholder="Kapitel / Beschreibung" />
+              <button class="btn btn-secondary btn-sm" id="btnAddCustomKiller" data-i18n="btnAddCustom">+ Hinzufügen</button>
+            </div>
+          </div>
+
+          <div class="start-actions">
+            <button class="btn btn-primary btn-lg btn-block" id="btnStartTournament" data-i18n="btnStartTournament">
+              🔥 Gruppen & Spieler auslosen & starten
+            </button>
+            <button class="btn btn-secondary btn-block" id="btnManualGroups">
+              🎲 Gruppen-Vorschau / Manuell bearbeiten
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right/Main: Character Roster Selection -->
+        <div class="roster-panel card">
+          <div class="roster-header">
+            <div>
+              <h2 id="rosterHeaderTitle">🩸 Killer-Auswahl (<span id="selectedCountHeader">0</span> / <span id="totalCountHeader">0</span> ausgewählt)</h2>
+              <p class="text-muted" id="rosterHeaderSub">Original-Porträts von <code>deadbydaylight.wiki.gg</code> (exakte <code>File:..._Portrait.png</code> Abfrage via <code>imageinfo</code>). Klicke zum An-/Abwählen.</p>
+            </div>
+            <div class="roster-controls">
+              <input type="search" id="searchKiller" class="input-text search-input" data-i18n-placeholder="searchPlaceholder" placeholder="🔍 Suchen..." />
+              <select id="filterCategory" class="input-select filter-select">
+                <option value="all">Alle Kategorien</option>
+                <option value="original">Original (Behaviour)</option>
+                <option value="licensed">Lizenziert (Franchise)</option>
+                <option value="legacy" id="optFilterLegacy">Legacy (Nicht mehr im Shop erhältlich)</option>
+                <option value="exclude_legacy">Ohne Legacy (Aktuell erhältlich)</option>
+                <option value="selected">Nur Ausgewählte</option>
+                <option value="unselected">Nicht Ausgewählte</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" id="btnRandomPick" data-i18n="btnRandomPick" title="Zufällige Anzahl an Teilnehmern auswählen">
+                🎲 Zufalls-Auswahl...
+              </button>
+            </div>
+          </div>
+
+          <div class="killer-grid" id="killerGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 1.5: PLAYER PROFILES & OWNERSHIP ==================== -->
+    <section id="view-players" class="view-section">
+      <div class="section-toolbar card">
+        <div class="toolbar-info">
+          <h2 id="playersViewTitle" data-i18n="playersTitle">👥 Spieler-Profile & Charakter-Besitz (Bis zu 6 Spieler)</h2>
+          <p class="text-muted" id="playersViewSub" data-i18n="playersSubtitle">
+            Lege hier die menschlichen Spieler an (Standard: 2 Spieler, die gegeneinander antreten) und wähle aus, welche Killer bzw. Survivor jeder Spieler besitzt.
+            Der Match-Algorithmus teilt vor jedem Duell automatisch und fair zu, wer welchen Charakter spielt!
+          </p>
+        </div>
+        <div class="toolbar-buttons">
+          <button class="btn btn-secondary btn-sm" id="btnRebalanceAssignments" data-i18n="btnReassignMatches" title="Berechnet die Spieler-Zuweisungen für alle offenen Matches neu">
+            ⚖️ Match-Zuweisungen neu berechnen
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnAddPlayerProfile" data-i18n="btnAddPlayer">
+            ➕ Spieler hinzufügen (max. 6)
+          </button>
+        </div>
+      </div>
+
+      <div class="players-layout">
+        <!-- Left: List of Players + Load Balancing Stats -->
+        <div class="players-sidebar card">
+          <h3><span data-i18n="activeTournamentPlayers">Aktive Turnier-Spieler</span> (<span id="activePlayersCount">2</span>/6)</h3>
+          <p class="text-muted" style="margin-bottom: 0.9rem;" id="playerSidebarDesc">Klicke auf ein Profil, um rechts den Besitz dieses Spielers für den aktuellen Modus (<strong id="playerSidebarRoleLabel">Killer</strong>) zu bearbeiten.</p>
+
+          <div class="player-list" id="playerListContainer">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="algo-info-box">
+            <h4 data-i18n="algoTitle">🤖 Wie arbeitet der Zuweisungs-Algorithmus?</h4>
+            <ul>
+              <li data-i18n-html="algoPoint1"><strong>Duell-Prinzip:</strong> In jedem Match treten zwei verschiedene Spieler gegeneinander an (Spieler 1 steuert Teilnehmer A, Spieler 2 steuert Teilnehmer B).</li>
+              <li data-i18n-html="algoPoint2"><strong>Besitz-Prüfung:</strong> Ein Spieler bekommt nur Killer/Survivor zugewiesen, die in seinem Profil als „Besitzt“ markiert sind.</li>
+              <li data-i18n-html="algoPoint3"><strong>Fairness-Ausgleich:</strong> Bei 2 Spielern wechseln sich beide fair ab; bei 3–6 Spielern achtet der Algorithmus darauf, dass jeder Spieler gleich viele Einsätze bekommt und niemand denselben Charakter dauernd doppelt spielt.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right: Active Player Profile Editor & Ownership Grid -->
+        <div class="player-editor card" id="playerEditorPanel">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: GROUP STAGE ==================== -->
+    <section id="view-groups" class="view-section">
+      <div class="section-toolbar card">
+        <div class="toolbar-info">
+          <h2 id="groupStageMainTitle">🌍 WM-Gruppenphase</h2>
+          <p class="text-muted" id="groupStageSubtitle" data-i18n="groupStageDesc">Jeder gegen Jeden in den ausgelosten Gruppen. Inklusive automatischer Zuweisung, welcher Spieler welchen Charakter übernimmt.</p>
+        </div>
+        <div class="toolbar-progress">
+          <div class="progress-text">
+            <span id="lblGroupMatchesProgress"><span data-i18n="groupMatchesPlayedLabel">Gespielte Gruppenspiele:</span> <strong id="groupMatchesPlayed">0</strong> / <strong id="groupMatchesTotal">0</strong></span>
+            <span id="groupProgressPercent">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="groupProgressBar" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="toolbar-buttons">
+          <button class="btn btn-secondary btn-sm" id="btnRedrawGroups" data-i18n="btnRedraw" data-i18n-title="titleRedrawGroups" title="Gruppen neu mischen (löscht bisherige Gruppenergebnisse)">🎲 Neu auslosen</button>
+          <button class="btn btn-secondary btn-sm" id="btnSimAllGroups" data-i18n="btnSimOpenGroups" data-i18n-title="titleSimOpenGroups" title="Offene Gruppenspiele zufällig simulieren">⚡ Offene Spiele simulieren</button>
+          <button class="btn btn-primary" id="btnAdvanceToKO" data-i18n="btnAdvanceToKO">🏆 K.O.-Phase starten / aktualisieren</button>
+        </div>
+      </div>
+
+      <!-- Filter by Group -->
+      <div class="group-filter-bar" id="groupFilterBar">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Groups Container -->
+      <div class="groups-container" id="groupsContainer">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: KNOCKOUT BRACKET ==================== -->
+    <section id="view-bracket" class="view-section">
+      <div class="section-toolbar card">
+        <div class="toolbar-info">
+          <h2 id="bracketMainTitle">🏆 K.O.-Finalrunde (Turnierbaum)</h2>
+          <p class="text-muted" id="bracketSubtitle" data-i18n="bracketDesc">Sieger rücken automatisch in die nächste Runde vor und der Algorithmus weist sofort die passenden Spieler für das nächste Duell zu!</p>
+        </div>
+        <div class="toolbar-buttons">
+          <button class="btn btn-secondary btn-sm" id="btnSimCurrentRound" data-i18n="btnSimCurrentRound">⚡ Aktuelle Runde simulieren</button>
+          <button class="btn btn-secondary btn-sm" id="btnRegenerateKO" data-i18n="btnRegenerateKO" data-i18n-title="titleRegenerateKO" title="K.O.-Baum aus aktuellen Gruppenergebnissen neu erstellen">🔄 Aus Gruppen neu laden</button>
+        </div>
+      </div>
+
+      <!-- Champion Banner (shown when tournament is finished) -->
+      <div class="champion-banner hidden" id="championBanner">
+        <div class="champion-avatar-wrap" id="championAvatarWrap"></div>
+        <div class="champion-details">
+          <span class="champion-label" id="championRoleLabel">👑 ENTITY'S WORLD CHAMPION</span>
+          <h2 id="championName">The Nurse</h2>
+          <p id="championSub">Sally Smithson • Unbesiegter Champion des Turniers</p>
+        </div>
+        <div class="podium-badges" id="podiumBadges"></div>
+      </div>
+
+      <!-- Visual Bracket Tree -->
+      <div class="bracket-wrapper" id="bracketWrapper">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: OVERALL STATS & RANKING ==================== -->
+    <section id="view-stats" class="view-section">
+      <div class="section-toolbar card">
+        <div class="toolbar-info">
+          <h2 data-i18n="statsMainTitle">📊 Turnier-Statistiken & Gesamtrangliste</h2>
+          <p class="text-muted" data-i18n="statsMainDesc">Sowohl die Performance der menschlichen Spieler als auch die Gesamtrangliste aller Teilnehmer im Turnier.</p>
+        </div>
+      </div>
+
+      <div class="stats-highlights" id="statsHighlights">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Human Player Leaderboard -->
+      <div class="card stats-table-card" style="margin-bottom: 1.5rem;">
+        <h3 style="font-family: var(--font-display); margin-bottom: 0.85rem; color: var(--entity-gold);" id="playerLeaderboardTitle" data-i18n="playerLeaderboardTitle">🎮 Spieler-Bilanz</h3>
+        <table class="standings-table full-stats-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Spieler</th>
+              <th>Gespielte Einsätze</th>
+              <th>Siege</th>
+              <th>Remis</th>
+              <th>Niederlagen</th>
+              <th id="thPlayerStat1">Erzielte Kills</th>
+              <th id="thPlayerStat2">Erzielte Hooks</th>
+              <th id="thPlayerAvg1">Ø Kills / Match</th>
+              <th id="thPlayerAvg2">Ø Hooks / Match</th>
+              <th>Punkte</th>
+            </tr>
+          </thead>
+          <tbody id="playerStatsBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Character Leaderboard -->
+      <div class="card stats-table-card">
+        <h3 style="font-family: var(--font-display); margin-bottom: 0.85rem; color: #fff;" id="charLeaderboardTitle">🩸 Gesamtrangliste</h3>
+        <table class="standings-table full-stats-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th id="thCharName">Killer</th>
+              <th>Gruppe</th>
+              <th title="Gespielte Matches">Sp.</th>
+              <th title="Siege">S</th>
+              <th title="Unentschieden">U</th>
+              <th title="Niederlagen">N</th>
+              <th id="thCharStat1">💀 Kills (Diff)</th>
+              <th id="thCharStat2">🪝 Hooks (Diff)</th>
+              <th id="thCharAvg1">Ø Wert 1</th>
+              <th title="Gesamtpunkte (3 für Sieg, 1 für Remis)">Pkt</th>
+            </tr>
+          </thead>
+          <tbody id="fullStatsBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== MODAL: MATCH RESULT EDITOR ==================== -->
+  <div class="modal-backdrop hidden" id="matchModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-badge" id="modalMatchLabel">Gruppe A • Spiel 1</span>
+        <button class="btn-close" id="btnCloseModal" aria-label="Schließen">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Player Assignment Banner inside Match Modal -->
+        <div class="modal-player-assignment-bar">
+          <div class="modal-player-slot">
+            <label class="score-label" id="modalPlayerLabelA">🎮 Spieler für Seite A</label>
+            <select id="selectModalPlayerA" class="input-select player-select-modal"></select>
+            <span class="ownership-warning hidden" id="warnOwnA">⚠️ Besitzt diesen Charakter laut Profil nicht!</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-xs" id="btnSwapMatchPlayers" title="Spieler-Zuweisung für dieses Match tauschen">
+            🔄 Spieler tauschen
+          </button>
+          <div class="modal-player-slot">
+            <label class="score-label" id="modalPlayerLabelB">🎮 Spieler für Seite B</label>
+            <select id="selectModalPlayerB" class="input-select player-select-modal"></select>
+            <span class="ownership-warning hidden" id="warnOwnB">⚠️ Besitzt diesen Charakter laut Profil nicht!</span>
+          </div>
+        </div>
+
+        <div class="match-versus-grid">
+          <!-- Competitor A -->
+          <div class="competitor-card" id="modalCardA">
+            <div class="competitor-avatar" id="modalAvatarA"></div>
+            <h3 class="competitor-title" id="modalTitleA">The Trapper</h3>
+            <p class="competitor-sub" id="modalSubA">Evan MacMillan</p>
+
+            <!-- Stat 1 Control Block -->
+            <div class="score-control-block" id="killsBlockA">
+              <label class="score-label" id="labelKillsA">💀 Kills (0–4)</label>
+              <div class="quick-score-pills" id="quickPillsStat1A" data-side="A">
+                <!-- Populated dynamically by JS according to mode -->
+              </div>
+              <input type="number" id="inputKillsA" class="score-number-input" min="0" max="999999" value="0" />
+            </div>
+
+            <!-- Stat 2 Control Block -->
+            <div class="score-control-block" id="hooksBlockA">
+              <label class="score-label" id="labelHooksA">🪝 Hooks (0–12)</label>
+              <div class="hooks-stepper" id="stepperStat2A">
+                <button type="button" class="step-btn" data-side="A" data-delta="-1">−</button>
+                <input type="number" id="inputHooksA" class="hooks-number-input" min="0" max="999999" value="0" />
+                <button type="button" class="step-btn" data-side="A" data-delta="1">+</button>
+              </div>
+              <div class="quick-hook-pills" id="quickPillsStat2A" data-side="A">
+                <!-- Populated dynamically by JS according to mode -->
+              </div>
+            </div>
+
+            <!-- Perk Loadout Block A -->
+            <div class="perk-loadout-block" id="perkBlockA">
+              <div class="perk-loadout-header">
+                <span class="score-label" id="perkLabelA">🔮 Perk-Loadout</span>
+                <div class="perk-header-actions" id="perkActionsA"></div>
+              </div>
+              <div class="perk-slots-grid" id="modalPerkSlotsA"></div>
+            </div>
+
+            <!-- Item & Addons Loadout Block A -->
+            <div class="item-addon-loadout-block" id="itemAddonBlockA">
+              <div class="item-addon-loadout-header">
+                <span class="score-label" id="itemAddonLabelA">🎒 Item & Addons</span>
+                <div class="item-addon-header-actions" id="itemAddonActionsA"></div>
+              </div>
+              <div class="item-addon-slots-grid" id="modalItemAddonSlotsA"></div>
+            </div>
+          </div>
+
+          <!-- VS Divider -->
+          <div class="vs-column">
+            <div class="vs-circle">VS</div>
+            <div class="match-live-verdict" id="modalLiveVerdict">Noch kein Ergebnis</div>
+            <button type="button" class="btn btn-secondary btn-xs" id="btnSimulateSingleMatch">
+              🎲 Zufalls-Match
+            </button>
+          </div>
+
+          <!-- Competitor B -->
+          <div class="competitor-card" id="modalCardB">
+            <div class="competitor-avatar" id="modalAvatarB"></div>
+            <h3 class="competitor-title" id="modalTitleB">The Wraith</h3>
+            <p class="competitor-sub" id="modalSubB">Philip Ojomo</p>
+
+            <!-- Stat 1 Control Block -->
+            <div class="score-control-block" id="killsBlockB">
+              <label class="score-label" id="labelKillsB">💀 Kills (0–4)</label>
+              <div class="quick-score-pills" id="quickPillsStat1B" data-side="B">
+                <!-- Populated dynamically by JS according to mode -->
+              </div>
+              <input type="number" id="inputKillsB" class="score-number-input" min="0" max="999999" value="0" />
+            </div>
+
+            <!-- Stat 2 Control Block -->
+            <div class="score-control-block" id="hooksBlockB">
+              <label class="score-label" id="labelHooksB">🪝 Hooks (0–12)</label>
+              <div class="hooks-stepper" id="stepperStat2B">
+                <button type="button" class="step-btn" data-side="B" data-delta="-1">−</button>
+                <input type="number" id="inputHooksB" class="hooks-number-input" min="0" max="999999" value="0" />
+                <button type="button" class="step-btn" data-side="B" data-delta="1">+</button>
+              </div>
+              <div class="quick-hook-pills" id="quickPillsStat2B" data-side="B">
+                <!-- Populated dynamically by JS according to mode -->
+              </div>
+            </div>
+
+            <!-- Perk Loadout Block B -->
+            <div class="perk-loadout-block" id="perkBlockB">
+              <div class="perk-loadout-header">
+                <span class="score-label" id="perkLabelB">🔮 Perk-Loadout</span>
+                <div class="perk-header-actions" id="perkActionsB"></div>
+              </div>
+              <div class="perk-slots-grid" id="modalPerkSlotsB"></div>
+            </div>
+
+            <!-- Item & Addons Loadout Block B -->
+            <div class="item-addon-loadout-block" id="itemAddonBlockB">
+              <div class="item-addon-loadout-header">
+                <span class="score-label" id="itemAddonLabelB">🎒 Item & Addons</span>
+                <div class="item-addon-header-actions" id="itemAddonActionsB"></div>
+              </div>
+              <div class="item-addon-slots-grid" id="modalItemAddonSlotsB"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tie-Breaker Selection (only visible in KO matches if tied on both stats) -->
+        <div class="ko-tiebreaker-box hidden" id="koTiebreakerBox">
+          <p class="tiebreaker-title">⚠️ Gleichstand im K.O.-Spiel! Wer gewinnt den Tie-Breaker (z. B. schnellere Zeit / mehr Blutpunkte / 1v1 Entscheid)?</p>
+          <div class="tiebreaker-buttons">
+            <button type="button" class="btn btn-secondary" id="btnTieWinnerA">Sieger: A</button>
+            <button type="button" class="btn btn-secondary" id="btnTieWinnerB">Sieger: B</button>
+          </div>
+        </div>
+
+        <!-- Optional Match Note (Map / Perks / Comment) -->
+        <div class="match-notes-row">
+          <input type="text" id="inputMatchNote" class="input-text" placeholder="Optional: Notiz zum Match (z. B. Map: MacMillan, 5 Gens left, Hatch Escape...)" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger-outline btn-sm" id="btnClearMatchResult" data-i18n="btnClearResult">Ergebnis löschen</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn btn-ghost" id="btnCancelModal" data-i18n="btnClose">Abbrechen</button>
+          <button type="button" class="btn btn-primary" id="btnSaveMatchResult" data-i18n="btnSaveResult">✅ Ergebnis speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: GROUP DRAW / MANUAL EDITOR ==================== -->
+  <div class="modal-backdrop hidden" id="groupEditorModal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <span class="modal-badge">🎲 Gruppen-Einteilung & Auslosung</span>
+        <button class="btn-close" id="btnCloseGroupEditor">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted" style="margin-bottom: 1rem;">
+          Klicke auf zwei Teilnehmer in verschiedenen Gruppen, um ihre Plätze zu tauschen, oder würfle die Gruppen komplett neu aus.
+        </p>
+        <div class="manual-groups-grid" id="manualGroupsGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnShuffleInModal" data-i18n="btnRedraw">🎲 Neu mischen</button>
+        <div class="modal-footer-right">
+          <button type="button" class="btn btn-ghost" id="btnCancelGroupEditor" data-i18n="btnClose">Schließen</button>
+          <button type="button" class="btn btn-primary" id="btnConfirmGroupsStart">🔥 Mit diesen Gruppen starten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PERK PICKER (FOR CUSTOM PERK MODE) ==================== -->
+  <div class="modal-backdrop hidden" id="perkPickerModal" style="z-index: 1200;">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <span class="modal-badge" id="perkPickerTitle">🔮 Perk auswählen (Slot 1)</span>
+        <button class="btn-close" id="btnClosePerkPicker">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="perk-picker-toolbar">
+          <input type="text" id="searchPerkInput" class="input-text" data-i18n-placeholder="searchPlaceholder" placeholder="🔍 Perk-Name oder Charakter suchen (z. B. Barbecue, Sprint Burst, Trapper)..." />
+          <select id="filterPerkCategory" class="input-select">
+            <option value="unlocked" selected data-i18n="perkFilterUnlocked">✅ Nur freigeschaltete Perks dieses Spielers</option>
+            <option value="all" data-i18n="perkFilterAll">Alle Perks dieser Rolle (inkl. gesperrter)</option>
+            <option value="char" data-i18n="perkFilterChar">🏅 Nur Charakter-eigene Perks (Adept)</option>
+            <option value="shrine" data-i18n="perkFilterShrine">⛩️ Nur Schrein-Käufe (Einzel-Freischaltungen)</option>
+            <option value="general" data-i18n="perkFilterGeneral">⭐ Nur Allgemeine Perks</option>
+          </select>
+          <button type="button" class="btn btn-danger-outline btn-sm" id="btnClearCurrentPerkSlot" data-i18n="btnClearSlot">🗑️ Slot leeren</button>
+        </div>
+        <div class="perk-picker-grid" id="perkPickerGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ITEM & ADDON PICKER ==================== -->
+  <div class="modal-backdrop hidden" id="itemAddonPickerModal" style="z-index: 1250;">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <span class="modal-badge" id="itemAddonPickerTitle">🎒 Item auswählen</span>
+        <button class="btn-close" id="btnCloseItemAddonPicker">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="perk-picker-toolbar">
+          <input type="text" id="searchItemAddonInput" class="input-text" data-i18n-placeholder="searchItemAddonPlaceholder" placeholder="🔍 Name suchen..." />
+          <select id="filterItemAddonCategory" class="input-select">
+            <option value="all">Alle</option>
+          </select>
+          <button type="button" class="btn btn-danger-outline btn-sm" id="btnClearCurrentItemAddonSlot" data-i18n="btnClearSlot">🗑️ Slot leeren</button>
+        </div>
+        <div class="perk-picker-grid" id="itemAddonPickerGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="translations.js"></script>
+  <script src="items_addons_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

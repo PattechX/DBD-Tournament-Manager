@@ -1,0 +1,58 @@
+{
+  "name": "dbd-tournament",
+  "productName": "DBD Tournament",
+  "version": "1.0.0",
+  "description": "DBD Tournament Desktop App",
+  "main": "main.js",
+  "author": "patri",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.patri.dbdtournament",
+    "productName": "DBD Tournament",
+    "afterPack": "afterPack.js",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "app.js",
+      "style.css",
+      "fonts.css",
+      "translations.js",
+      "items_addons_data.js",
+      "Assets/**/*"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "icon": "Assets/logodbd.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DBD Tournament",
+      "installerIcon": "Assets/logodbd.ico",
+      "uninstallerIcon": "Assets/logodbd.ico",
+      "uninstallDisplayName": "DBD Tournament",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    }
+  },
+  "allowScripts": {
+    "electron@31.7.7": true
+  }
+}
