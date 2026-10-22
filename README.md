@@ -72,7 +72,7 @@ Ein zentraler Kern des Systems ist das integrierte Spieler- und Kontomanagement,
   * Vollständiger Export und Import von Turnierständen und Spielerprofilen im JSON-Format.
 
 ### Windows Desktop-App & Downloads
-Fertig kompilierte Installations- und Programmdateien stehen unter [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases) zum Download bereit:
+Fertig kompilierte Installations- und Programmdateien stehen unter [GitHub Releases](https://github.com/PattechX/DBD-Tournament-Manager/releases) zur Verfügung:
 * **Installationspaket:** `DBD Tournament Setup 1.0.0.exe` (erstellt Desktop- und Startmenü-Verknüpfungen inklusive Deinstallationsroutine).
 * **Portable Version:** `DBD Tournament 1.0.0.exe` (direkt ausführbar ohne Installationsprozess).
 
@@ -85,9 +85,12 @@ npm start       # Start der Anwendung im Entwicklungsmodus
 npm run dist    # Kompilierung des Installers und der portablen .exe
 ```
 
-### Rechtliche Hinweise und Copyright
-* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* und alle zugehörigen Charaktere, Grafiken, Markenzeichen und Namen sind Eigentum von Behaviour Interactive Inc.
-* **Designed by Dr. D. Erobert and Built with AI**
+### Rechtlicher Hinweis & Fan-Disclaimer
+> **Nicht-offizielles Fan-Projekt:**  
+> Dieses Projekt ist eine unabhängige, nicht-kommerzielle Fan-Entwicklung und dient ausschließlich Community- und Unterhaltungszwecken. Es wird kein kommerzieller Gewinn erzielt und kein Entgelt für die Nutzung verlangt.  
+> *Dead by Daylight* sowie alle dazugehörigen Logos, Charaktere, Grafiken, Markennamen und Sounds sind Marken oder eingetragene Marken von **Behaviour Interactive Inc.** bzw. den jeweiligen Lizenzinhabern (einschließlich extern lizenzierter Film- und Spielcharaktere). Dieses Projekt steht in keiner geschäftlichen Verbindung zu Behaviour Interactive Inc. und wird von diesen weder gesponsert, unterstützt noch autorisiert.
+>
+> **Designed by Dr. D. Erobert and Built with AI**
 
 ---
 
@@ -156,9 +159,12 @@ npm start       # Run locally in development environment
 npm run dist    # Package installer and portable executables
 ```
 
-### Legal Notice and Copyright
-* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* and all associated characters, logos, trademarks, and names are properties of Behaviour Interactive Inc.
-* **Designed by Dr. D. Erobert and Built with AI**
+### Legal Notice & Fan Content Disclaimer
+> **Unofficial Fan Creation:**  
+> This project is an independent, non-commercial fan creation made purely for community and competitive enjoyment. It is offered free of charge with no monetization or commercial intent.  
+> *Dead by Daylight* and all associated logos, characters, artwork, audio, and trademarks are the property or registered trademarks of **Behaviour Interactive Inc.** or their respective third-party licensors (including licensed film and video game properties). This project is not affiliated with, endorsed, sponsored, or approved by Behaviour Interactive Inc.
+>
+> **Designed by Dr. D. Erobert and Built with AI**
 
 ---
 
@@ -219,9 +225,12 @@ npm start       # Ejecución en entorno de desarrollo
 npm run dist    # Generación de paquetes instalables y portables para Windows
 ```
 
-### Aviso Legal y Derechos de Autor
-* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* y todos los personajes, logotipos, marcas comerciales y nombres asociados son propiedad de Behaviour Interactive Inc.
-* **Designed by Dr. D. Erobert and Built with AI**
+### Aviso Legal y Descargo de Responsabilidad para Fans
+> **Creación no oficial de fans:**  
+> Este proyecto es una obra no comercial creada por y para la comunidad con fines recreativos y organizativos. No genera ingresos ni cobra tarifas por su uso.  
+> *Dead by Daylight* y todos los logotipos, personajes, ilustraciones y marcas asociadas son propiedad o marcas registradas de **Behaviour Interactive Inc.** o de sus respectivos licenciantes comerciales. Este proyecto no está respaldado, patrocinado, autorizado ni vinculado formalmente a Behaviour Interactive Inc.
+>
+> **Designed by Dr. D. Erobert and Built with AI**
 
 ---
 
@@ -282,6 +291,9 @@ npm start       # Lancement en mode développement
 npm run dist    # Assemblage de l'installeur et de l'exécutable portable Windows
 ```
 
-### Mentions Légales et Droits d'Auteur
-* © Copyright by **Behaviour Interactive Inc.** – *Dead by Daylight* et l'ensemble des éléments graphiques, marques, logos et noms associés sont la propriété exclusive de Behaviour Interactive Inc.
-* **Designed by Dr. D. Erobert and Built with AI**
+### Mention Légale & Clause de Non-Responsabilité Fan
+> **Création de fans non officielle :**  
+> Ce projet est une création indépendante et bénévole réalisée sans but lucratif pour la communauté. Aucun droit d'accès payant n'est requis et aucune exploitation commerciale n'est effectuée.  
+> *Dead by Daylight* ainsi que l'ensemble des marques, logos, graphismes, personnages et sons associés sont la propriété exclusive de **Behaviour Interactive Inc.** ou de leurs ayants droit respectifs. Ce projet n'est ni affilié, ni commandité, ni approuvé de quelque manière que ce soit par Behaviour Interactive Inc.
+>
+> **Designed by Dr. D. Erobert and Built with AI**
